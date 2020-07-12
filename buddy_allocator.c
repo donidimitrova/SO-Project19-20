@@ -27,9 +27,10 @@ int startIdx(int idx){
 
 // computes the size in bytes for the allocator
 int BuddyAllocator_calcSize(int num_levels) {
-  int list_items=1<<(num_levels+1); // maximum number of allocations, used to determine the max list items
-  int list_alloc_size=(sizeof(BuddyListItem)+sizeof(int))*list_items;
-  return list_alloc_size;
+  int num_bits=1<<(num_levels+1)
+  //int list_items=1<<(num_levels+1);// maximum number of allocations, used to determine the max list items
+  //int list_alloc_size=(sizeof(BuddyListItem)+sizeof(int))*list_items;
+  return num_bits/8+((num_bits%8)!=0);
 }
 
 // creates an item from the index
