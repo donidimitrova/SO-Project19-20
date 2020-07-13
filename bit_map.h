@@ -38,3 +38,4 @@ int startIdx(int idx);
 
 void* alloc(BitMap* bitmap,int size);
 
+void free_bitmap(BitMap* bitmap,void* address);

@@ -67,23 +67,25 @@ int main(){
 		printf(" Livello %d ho dimensione del blocco %d \n", i, buffer[i]);
 	
 	}
-	int test[8]={374,12,66,33,67,1,1,1};
-    for(int i=0;i<8;i++){
+	int test[7]={374,12,66,33,67,1,1};
+	void* test_indirizzi[7];
+    for(int i=0;i<7;i++){
         void* res=alloc(bitmap,test[i]);
         
         if(res){
-            printf("Ho allocato %d nel blocco %d\n",test[i],res);
+			test_indirizzi[i]=res;
             printf("Ho allocato %d nel blocco %p\n",test[i],res);
-            char* p=(char*) res;
-            p=p-8;
-            void** buddy_ptr=(void**)p;
-            void* buddy=*buddy_ptr;
-            printf("Indirizzo del buddy %p\n",buddy);
+           
         }
         else{
             printf("Non ho potuto allocare %d byte\n",test[i]);
         }
     }
+    printf("\n\n\n");
+    for(int i=0;i<7;i++){
+        free_bitmap(bitmap,test_indirizzi[6-i]);
+    }
+    
     printf("\nNumero bit\n");
 	 for(int i=1;i<bit;i++){
         
@@ -98,6 +100,7 @@ int main(){
         printf("%d %d\n",i,buffer[i]);
     }
 
-
+	free(bitmap);
+    free(buffer);
 	return 0;
 }

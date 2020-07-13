@@ -145,3 +145,36 @@ void* alloc(BitMap* bitmap,int size){
   }
   return NULL;
 }
+
+void free_bitmap(BitMap* bitmap,void* address){
+  char* address_originale=(char*) address;
+  address_originale=address_originale-8;
+  void** buddy_ptr=(void**) address_originale;
+  void* buddy=*buddy_ptr;
+  printf("Indirizzo: %p\tIndirizzo_buddy: %p\n",address_originale,buddy);
+  char* address_buddy=(char*) buddy;
+  int differenza=abs(address_originale-address_buddy);
+  //printf("Differenza: %d\n",differenza);
+  int level=level_from_size(bitmap,differenza);
+  int dimensione_level=(1<<(LIVELLI-level-1))*MIN_PAGE;
+  assert(differenza==dimensione_level);
+  printf("Sono al livello %d di dimensione %d\n",level,dimensione_level);
+  int indice=(address_originale-bitmap->memory)/dimensione_level+(1<<level);
+  int indice_buddy=(address_buddy-bitmap->memory)/dimensione_level+(1<<level);
+  assert(indice_buddy==getBuddy(indice));
+  printf("Indice: %d\tIndice Buddy: %d\n",indice,indice_buddy);
+  assert(BitMap_bit(bitmap,indice));
+  BitMap_setBit(bitmap,indice,0);
+  while(indice!=0){
+    if(!BitMap_bit(bitmap,getBuddy(indice))){
+      printf("Setto il padre di %d a 0, il padre ha indice %d\n",indice,indice/2);
+      BitMap_setBit(bitmap,indice/2,0);
+    }
+    else{
+      printf("\n");
+      return;
+    }
+    indice=indice/2;  
+  }
+  printf("\n");
+}
