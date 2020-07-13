@@ -5,10 +5,20 @@
 #include <stdlib.h>
 
 #define BUDDY_LEVELS 5
+#define MIN_PAGE 64
+#define MEMORY_SIZE (1<<(BUDDY_LEVELS-1))*MIN_PAGE
 
+char memory[MEMORY_SIZE];
 int main(){
+	printf("MEMORY: %d\n",MEMORY_SIZE);
 	//calcolo quanti bit sono necessari alla bitmap
 	int bit=1<<BUDDY_LEVELS;
+	char* start=memory;
+    char* end=memory+bit;
+    printf("Indirizzo memoria start: %p\n",memory);
+    printf("Indirizzo memoria end: %p\n",memory+bit);
+
+    printf("Differenza: %ld\n",end-start);
 	printf("Number bit: %d \n", bit);
 	
 	//calcolo il numero di byte
@@ -32,6 +42,7 @@ int main(){
 	bitmap-> buffer=buffer;
 	bitmap->num_bits=bit;
 	bitmap->buffer_size=byte;
+	bitmap->memory=memory;
 	//metto tutti 1 a tutti i bit
 	for(int i=1; i<bit;i++){
 		printf("Imposto il bit: %d a 1\n", i);
@@ -56,32 +67,37 @@ int main(){
 		printf(" Livello %d ho dimensione del blocco %d \n", i, buffer[i]);
 	
 	}
-	
-	int test[7]={12,66,33,67,374,1,1};
-    for(int i=0;i<7;i++){
+	int test[8]={374,12,66,33,67,1,1,1};
+    for(int i=0;i<8;i++){
         void* res=alloc(bitmap,test[i]);
+        
         if(res){
-            printf("ho allocato %d nel blocco %d\n",test[i],res);
+            printf("Ho allocato %d nel blocco %d\n",test[i],res);
+            printf("Ho allocato %d nel blocco %p\n",test[i],res);
+            char* p=(char*) res;
+            p=p-8;
+            void** buddy_ptr=(void**)p;
+            void* buddy=*buddy_ptr;
+            printf("Indirizzo del buddy %p\n",buddy);
         }
         else{
             printf("Non ho potuto allocare %d byte\n",test[i]);
         }
     }
-
-    for(int i=1;i<bit;i++){
-
+    printf("\nNumero bit\n");
+	 for(int i=1;i<bit;i++){
+        
         if(BitMap_bit(bitmap,i)){
             printf("%d\n",i);
         }   
     }
+    
+    printf("\n");
 
     for(int i=0;i<byte;i++){
         printf("%d %d\n",i,buffer[i]);
     }
 
 
-	
-	free(bitmap);
-	free(buffer);
 	return 0;
 }
