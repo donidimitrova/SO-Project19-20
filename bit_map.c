@@ -40,7 +40,7 @@ int BitMap_bit(const BitMap* bit_map, int bit_num){
   return (bit_map->buffer[byte_num] & (1<<bit_in_byte))!=0;
 }
 
-int levelIdx(size_t idx){
+int levelIdx(int idx){
 	return (int)floor(log2(idx));
 }
 

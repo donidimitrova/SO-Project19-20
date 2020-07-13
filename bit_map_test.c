@@ -8,7 +8,7 @@
 
 int main(){
 	//calcolo quanti bit sono necessari alla bitmap
-	int bit=(int) pow(2.0, BUDDY_LEVELS*1.0);	
+	int bit=1<<BUDDY_LEVELS;
 	printf("Number bit: %d \n", bit);
 	
 	//calcolo il numero di byte
@@ -37,12 +37,27 @@ int main(){
 		printf("Imposto il bit: %d a 1\n", i);
 		BitMap_setBit(bitmap,i,1);
 		//quale byte sto toccando
-		printf("Sono nel livello dove ho dimensione blocco %d  \n", buffer[i/8]);
+		//printf("Sono nel livello dove ho dimensione blocco %d  \n", buffer[i/8]);
+		if(!BitMap_bit(bitmap,i)){
+			printf("Error\n");
+		}
 	}
+	
+	
+	for ( int i=1; i<bit;i++){
+		BitMap_setBit(bitmap, i,0);
+		if(BitMap_bit(bitmap,i)){
+			printf("Error\n");
+		}
+	}
+	
 	printf("\n");
 	for( int i=0; i<byte;i++){
 		printf(" Livello %d ho dimensione del blocco %d \n", i, buffer[i]);
 	
 	}
+	
+	free(bitmap);
+	free(buffer);
 	return 0;
 }

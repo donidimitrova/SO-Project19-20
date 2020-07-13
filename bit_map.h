@@ -22,7 +22,7 @@ void BitMap_setBit(BitMap* bit_map, int bit_num, int status);
 int BitMap_bit(const BitMap* bit_map, int bit_num);
 
 //livello di un indice
-int levelIdx(size_t idx);
+int levelIdx(int idx);
 
 //il buddy del indice
 int getBuddy(int idx);
