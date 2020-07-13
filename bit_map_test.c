@@ -59,7 +59,7 @@ int main(){
 	
 	int test[7]={12,66,33,67,374,1,1};
     for(int i=0;i<7;i++){
-        int res=alloc(bitmap,test[i]);
+        void* res=alloc(bitmap,test[i]);
         if(res){
             printf("ho allocato %d nel blocco %d\n",test[i],res);
         }

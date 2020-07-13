@@ -6,6 +6,7 @@ typedef struct  {
   uint8_t *buffer;  // externally allocated buffer
   int buffer_size;
   int num_bits; 
+  char* memory;
 } BitMap;
 
 // returns the number of bytes to store bits booleans
@@ -27,6 +28,13 @@ int levelIdx(int idx);
 //il buddy del indice
 int getBuddy(int idx);
 
+//il padre del indice
+int parentIdx(int idx);
+
+//livello della dimensione
+int level_from_size(BitMap* bitmap, int size);
+
 int startIdx(int idx);
 
-int alloc(BitMap* bitmap,int size);
+void* alloc(BitMap* bitmap,int size);
+

@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
   void* p1=BuddyAllocator_malloc(&alloc, 100);
   void* p2=BuddyAllocator_malloc(&alloc, 100);
   void* p3=BuddyAllocator_malloc(&alloc, 100000);
+  
+  
   BuddyAllocator_free(&alloc, p1);
   BuddyAllocator_free(&alloc, p2);
   BuddyAllocator_free(&alloc, p3);
