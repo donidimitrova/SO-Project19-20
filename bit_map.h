@@ -29,3 +29,4 @@ int getBuddy(int idx);
 
 int startIdx(int idx);
 
+int alloc(BitMap* bitmap,int size);

@@ -57,6 +57,30 @@ int main(){
 	
 	}
 	
+	int test[7]={12,66,33,67,374,1,1};
+    for(int i=0;i<7;i++){
+        int res=alloc(bitmap,test[i]);
+        if(res){
+            printf("ho allocato %d nel blocco %d\n",test[i],res);
+        }
+        else{
+            printf("Non ho potuto allocare %d byte\n",test[i]);
+        }
+    }
+
+    for(int i=1;i<bit;i++){
+
+        if(BitMap_bit(bitmap,i)){
+            printf("%d\n",i);
+        }   
+    }
+
+    for(int i=0;i<byte;i++){
+        printf("%d %d\n",i,buffer[i]);
+    }
+
+
+	
 	free(bitmap);
 	free(buffer);
 	return 0;

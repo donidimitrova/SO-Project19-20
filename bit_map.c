@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#define LIVELLI 9
+#define LIVELLI 5 
+#define MIN_PAGE 64
 
 // returns the number of bytes to store bits booleans
 int BitMap_getBytes(int bits){
@@ -85,3 +86,71 @@ int prova_nodo(BitMap* bitmap, int idx){
 
 }
 
+int alloc_aux(BitMap* bitmap,int size,int idx){
+  int level=levelIdx(idx);
+  int dimensione_livello=(1<<(LIVELLI-level-1))*MIN_PAGE;
+  if(idx>=(1<<LIVELLI) || size > dimensione_livello){
+    return 0;
+  }
+
+  if((dimensione_livello/2<size && size<=dimensione_livello) || dimensione_livello/2<=MIN_PAGE/2){
+    //printf("Dimensione Giusta\n");
+    if(prova_nodo(bitmap,idx)){
+      //printf("Indice: %d sono al livello %d e ho allocato %d in un blocco di %d\n",idx,level,size,dimensione_livello);
+      return idx;
+    }
+    else{
+      //printf("Provo nel buddy\n");
+      //printf("nodo occupato provo nel buddy a destra se ce l'ho\n");
+      if(idx&0x1){    //idx dispari
+        //printf("sono gia sul buddy di destra\n");
+        return 0;
+      }
+      else{
+        //printf("provo nel buddy di destra\n");
+        if(prova_nodo(bitmap,idx+1)){
+          //printf("Indice: %d sono al livello %d e ho allocato %d in un blocco di %d\n",idx+1,level,size,dimensione_livello);
+          return idx+1;
+        }
+      }
+    }
+    return 0;
+  } 
+  else{
+    if(!BitMap_bit(bitmap,idx)){
+      int res=alloc_aux(bitmap,size,idx*2);
+      if(!res){
+        //printf("non ho trovato niente nel ramo provo nel buddy\n");
+        //res1=alloc(size,get_buddy(idx))
+        if(idx&0x1){
+          //printf("sono gia sul buddy di destra\n");
+          return 0;
+        }
+        else{
+          //printf("provo nel buddy di destra\n");
+          return alloc_aux(bitmap,size,idx+1);
+        }
+      }  
+      else{
+        return res;
+      }
+    }
+    else{
+      //printf("nodo occupato provo nel buddy a destra se ce l'ho\n");
+      if(idx&0x1){
+        //printf("sono gia sul buddy di destra\n");
+        return 0;
+      }
+      else{
+        //printf("provo nel buddy di destra\n");
+        return alloc_aux(bitmap,size,idx+1);
+      }
+    }
+  }
+}
+
+int alloc(BitMap* bitmap,int size){
+  //printf("Prova\n");
+  int res=alloc_aux(bitmap,size,1);
+  return res;
+}
