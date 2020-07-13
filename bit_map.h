@@ -20,3 +20,12 @@ void BitMap_setBit(BitMap* bit_map, int bit_num, int status);
 
 // inspects the status of the bit bit_num
 int BitMap_bit(const BitMap* bit_map, int bit_num);
+
+//livello di un indice
+int levelIdx(size_t idx);
+
+//il buddy del indice
+int getBuddy(int idx);
+
+int startIdx(int idx);
+
