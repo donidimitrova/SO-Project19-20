@@ -30,7 +30,7 @@ buddy_test: buddy_test.o $(LIBS)
 buddy_allocator_test: buddy_allocator_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
 	
-bit_map_test: buddy_allocator_test.o $(LIBS)
+bit_map_test: bit_map_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
 
 clean:

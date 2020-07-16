@@ -3,16 +3,42 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+/*
 #define LIVELLI 5 
 #define MIN_PAGE 64
 #define MAX_SIZE (1<<(LIVELLI-1))*MIN_PAGE
+*/
 
-int level_from_size(BitMap* bitmap, int size){
-	int minimo=(int)(MAX_SIZE/MIN_PAGE);
-	int res=(int)(MAX_SIZE/size);
-	if(res>minimo) res=minimo;
-	int level= (int)floor(log2(res));
-	return level;
+
+void BitMap_clear(BitMap*bitmap){
+	for(int i=0; i>bitmap->num_bits;i++){
+		//setto il bit i a 0
+		BitMap_setBit(bitmap,i,0);
+		//controllo se è stato settato bene
+		if(BitMap_bit(bitmap,i)){
+			printf("Error\n");
+			return;
+		}
+	}
+}
+
+int BitMap_is_empty(BitMap* bitmap){
+	for(int i=0; i<bitmap->num_bits; i++){
+		if(BitMap_bit(bitmap,i)){
+			printf("Non e' vuoto!\n");
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void BitMap_idx_occupati(BitMap* bitmap){
+	printf("Indici occupati: \n");
+	for( int i=1; i<bitmap-> num_bits; i++){
+		if(BitMap_bit (bitmap,i)){
+			printf(" %d \n", i);
+		}
+	}
 }
 
 // returns the number of bytes to store bits booleans
@@ -25,6 +51,7 @@ void BitMap_init(BitMap* bit_map, int num_bits, uint8_t* buffer){
   bit_map->buffer=buffer;
   bit_map->num_bits=num_bits;
   bit_map->buffer_size=BitMap_getBytes(num_bits);
+  BitMap_clear(bit_map);
 }
 
 // sets a the bit bit_num in the bitmap
@@ -54,7 +81,7 @@ int levelIdx(int idx){
 	return (int)floor(log2(idx));
 }
 
-int getBuddy(int idx){
+int BuddyIdx(int idx){
 	//faccio verifica se pari o dispari
 	if(idx&0x1) return idx-1;
 	return idx+1;
@@ -68,7 +95,7 @@ int startIdx(int idx){
 	return (idx-(1<<levelIdx(idx)));
 }
 
-int verifica_sopra(BitMap* bitmap, int idx){
+int verifica_padri(BitMap* bitmap, int idx){
 	int padre=idx/2;
 	while(padre!=0){
 		if(BitMap_bit(bitmap,padre)){
@@ -81,7 +108,7 @@ int verifica_sopra(BitMap* bitmap, int idx){
 	return 1;
 }
 
-int verifica_sotto(BitMap* bitmap, int idx){
+int verifica_sotto_albero(BitMap* bitmap, int idx){
 	int cont=idx*2;
 	int level=1;
 	while(cont< bitmap->num_bits){
@@ -96,7 +123,7 @@ int verifica_sotto(BitMap* bitmap, int idx){
 	return 1;
 }
 
-void setbita1(BitMap* bitmap, int idx){
+void BitMap_setbit_a_1 (BitMap* bitmap, int idx){
 	BitMap_setBit(bitmap, idx,1);
 	int padre=idx;
 	while(padre!=0){
@@ -109,72 +136,4 @@ void setbita1(BitMap* bitmap, int idx){
 		padre=padre/2;
 	}
 	return;
-}
-
-void* from_idx_to_memory_address(BitMap* bitmap, int idx){
-	int level=levelIdx(idx);
-	int dimensione_level=(1<<(LIVELLI-level-1))*MIN_PAGE;
-	int buddyIdx=getBuddy(idx);
-	char* address=bitmap->memory+(idx-(1<<levelIdx(idx)))*dimensione_level;
-	char* address_buddy=bitmap-> memory+(buddyIdx-(1<<levelIdx(buddyIdx)))*dimensione_level;
-	printf("Indirizzo: %p\t Indirizzo Buddy: %p \n", address, address_buddy);
-	int differenza=abs(address-address_buddy);
-	
-	void** start=(void**) address;
-	*start=address_buddy;
-	printf("Indirizzo: %p \n", start);
-	printf("Indirizzo Buddy: %p \n", *start);
-	return (void*) (address+8);
-}
-
-void* alloc(BitMap* bitmap,int size){
-  int level=level_from_size(bitmap,size+8); //Livello
-  int dimensione_level=(1<<(LIVELLI-level-1))*MIN_PAGE; //dimensione livello
-  int start_idx=1<<level;
-  int end_idx=(1<<(level+1))-1;
-  int cont=start_idx;
-  while(cont <=end_idx){
-	  if(!BitMap_bit(bitmap, cont)){
-		  if(verifica_sopra(bitmap,cont) && verifica_sotto(bitmap, cont)){
-			  setbita1(bitmap, cont);
-			  printf( " Ho allocato %d all'inidice: %d\n", size, cont);
-			  return from_idx_to_memory_address(bitmap, cont);
-		  }
-	  }
-	  cont++;
-  }
-  return NULL;
-}
-
-void free_bitmap(BitMap* bitmap,void* address){
-  char* address_originale=(char*) address;
-  address_originale=address_originale-8;
-  void** buddy_ptr=(void**) address_originale;
-  void* buddy=*buddy_ptr;
-  printf("Indirizzo: %p\tIndirizzo_buddy: %p\n",address_originale,buddy);
-  char* address_buddy=(char*) buddy;
-  int differenza=abs(address_originale-address_buddy);
-  //printf("Differenza: %d\n",differenza);
-  int level=level_from_size(bitmap,differenza);
-  int dimensione_level=(1<<(LIVELLI-level-1))*MIN_PAGE;
-  assert(differenza==dimensione_level);
-  printf("Sono al livello %d di dimensione %d\n",level,dimensione_level);
-  int indice=(address_originale-bitmap->memory)/dimensione_level+(1<<level);
-  int indice_buddy=(address_buddy-bitmap->memory)/dimensione_level+(1<<level);
-  assert(indice_buddy==getBuddy(indice));
-  printf("Indice: %d\tIndice Buddy: %d\n",indice,indice_buddy);
-  assert(BitMap_bit(bitmap,indice));
-  BitMap_setBit(bitmap,indice,0);
-  while(indice!=0){
-    if(!BitMap_bit(bitmap,getBuddy(indice))){
-      printf("Setto il padre di %d a 0, il padre ha indice %d\n",indice,indice/2);
-      BitMap_setBit(bitmap,indice/2,0);
-    }
-    else{
-      printf("\n");
-      return;
-    }
-    indice=indice/2;  
-  }
-  printf("\n");
 }
