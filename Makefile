@@ -5,7 +5,7 @@ AR=ar
 OBJS=bit_map.o\
      buddy_allocator.o
 
-HEADERS=bit_map.h buddy_allocator.h
+HEADERS= bit_map.h buddy_allocator.h
 
 LIBS=libbuddy.a
 
@@ -23,15 +23,16 @@ libbuddy.a: $(OBJS)
 	$(AR) -rcs $@ $^
 	$(RM) $(OBJS)
 
-
 buddy_test: buddy_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
 
 buddy_allocator_test: buddy_allocator_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
-	
+
 bit_map_test: bit_map_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
+
+
 
 clean:
 	rm -rf *.o *~ $(LIBS) $(BINS)
