@@ -6,7 +6,7 @@
 
 //setta a zero tutti i bit della bitmap
 void BitMap_clear(BitMap* bitmap){
-  for(int i=1;i<bitmap->num_bits;i++){
+  for(int i=0;i<bitmap->num_bits;i++){
     //printf("setto il bit %d a 0\n",i);
     BitMap_setBit(bitmap,i,0);
     //printf("%d\n",buffer[i/8]);
@@ -19,7 +19,7 @@ void BitMap_clear(BitMap* bitmap){
 
 //restituisce 1 se tutti i bit della bitmap sono zero, 0 altrimenti
 int BitMap_is_empty(BitMap* bitmap){
-  for(int i=1;i<bitmap->num_bits;i++){
+  for(int i=0;i<bitmap->num_bits;i++){
     if(BitMap_bit(bitmap,i)){
       printf("Bitmap non vuota\n");
       return 0;
@@ -30,7 +30,7 @@ int BitMap_is_empty(BitMap* bitmap){
 
 //stampa tutti gli indici dove bitmap[index]=1
 void BitMap_idx_occupati(BitMap* bitmap){
-  for(int i=1;i<bitmap->num_bits;i++){
+  for(int i=0;i<bitmap->num_bits;i++){
     if(BitMap_bit(bitmap,i)){
       printf("Indice occupato: %d \n",i);
       

@@ -89,6 +89,7 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
   int num_bytes=num_bits/8 + ((num_bits%8)!=0);
 
   printf("BUDDY INITIALIZING\n");
+  printf("\tIndirizzo di partenza: %p\n", memory);
   printf("\tLivelli: %d", num_levels);
   printf("\tSize Bitmap: %d bytes\n", num_bytes);
   printf("\tBucket size:%d\n", min_bucket_size);
