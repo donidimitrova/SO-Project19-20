@@ -1,10 +1,10 @@
-//#include "pool_allocator.h"
-//#include "linked_list.h"
 #include "bit_map.h"
 #define MAX_LEVELS 16
 
-typedef struct  {
 
+
+typedef struct  {
+  
   int num_levels;
   BitMap bitmap;
   char* memory; // the memory area to be managed

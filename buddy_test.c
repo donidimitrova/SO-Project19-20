@@ -1,5 +1,6 @@
 #include "buddy_allocator.h"
 #include <stdio.h>
+#include <assert.h>
 
 #define BUFFER_SIZE 102400
 #define BUDDY_LEVELS 9
@@ -8,6 +9,7 @@
 
 uint8_t buffer[BUFFER_SIZE]; // 100 Kb buffer to handle memory should be enough
 char memory[MEMORY_SIZE];
+
 
 BuddyAllocator alloc;
 int main(int argc, char** argv) {
@@ -55,6 +57,8 @@ int main(int argc, char** argv) {
   printf("releasing a buddy of depth 7\n");
   BuddyAllocator_releaseBuddy(&alloc, item7_1);
   
+  assert(BitMap_is_empty(&alloc.bitmap));
+  printf("BitMap vuota\n");
 
   
   

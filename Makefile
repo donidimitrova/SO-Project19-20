@@ -30,6 +30,7 @@ buddy_test: buddy_test.o $(LIBS)
 buddy_allocator_test: buddy_allocator_test.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
 
+
 buddy_allocator_test_1: buddy_allocator_test_1.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
 
@@ -51,6 +52,7 @@ buddy_allocator_test_5: buddy_allocator_test_5.o $(LIBS)
 
 buddy_allocator_test_6: buddy_allocator_test_6.o $(LIBS)
 	$(CC) $(CCOPTS) -o $@ $^ -lm
+
 
 
 clean:
