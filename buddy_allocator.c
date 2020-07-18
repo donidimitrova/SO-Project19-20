@@ -167,17 +167,11 @@ void BuddyAllocator_releaseBuddy(BuddyAllocator* alloc, int indice){
   assert(BitMap_bit(&alloc->bitmap,indice));
 
 
-  BitMap_setBit(&alloc->bitmap,indice,0);
-  //devo settare i padri a zero fino a che non trovo un padre libero(zero) 
-  indice=indice/2;
-  while(indice!=0){
-    if(!BitMap_bit(&alloc->bitmap,indice)){
-      //printf("il bit %d era gia a ZERO, non continuo\n",indice);
-      break;
-    }
-    BitMap_setBit(&alloc->bitmap,indice,0);
-    indice=indice/2;  
-  }
+  //Verifico se l'indirizzo passato alla free è stato restituito
+  //da una malloc oppure è stato modificato
+  assert(verifica_sotto_albero(&alloc->bitmap,indice));
+  BitMap_setBit_a_0(&alloc->bitmap,indice);
+  
   printf("\n");
 }
 

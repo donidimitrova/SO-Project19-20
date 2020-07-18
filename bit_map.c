@@ -145,7 +145,9 @@ int verifica_sotto_albero(BitMap* bitmap,int idx){
 void BitMap_setBit_a_1(BitMap* bitmap,int idx){
   BitMap_setBit(bitmap,idx,1);
   int padre=idx;
-  while(padre!=0){
+  
+  //Sono nel nodo padre con buddy buddyIdx(padre(
+  while(padre>1){
     if(BitMap_bit(bitmap,buddyIdx(padre))){
       //printf("Setto il padre a 1: %d\n", padre/2);
       BitMap_setBit(bitmap,padre/2,1);
@@ -157,6 +159,24 @@ void BitMap_setBit_a_1(BitMap* bitmap,int idx){
   }
   return;
 }
+
+//setta il bit corrispondente all'indice idx a 0
+//setto tutti i padri di idx a 0 fino a che non trovo padre con 0
+
+void BitMap_setBit_a_0(BitMap* bitmap, int idx){
+	BitMap_setBit(bitmap, idx, 0);
+	//devo settare i padri a zero fino a che non trovo un padre libero
+	idx=idx/2;
+	while(idx!=0){
+		if(!BitMap_bit(bitmap,idx)){
+			// il bit idx era già Zero, non continuo
+			break;
+		}
+		BitMap_setBit(bitmap,idx,0);
+		idx=idx/2;
+	}
+}
+
 
 
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 4
 #define BUDDY_LEVELS 4
 #define MEMORY_SIZE 1024
 #define MIN_BUCKET_SIZE (MEMORY_SIZE>>(BUDDY_LEVELS))

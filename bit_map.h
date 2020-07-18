@@ -45,6 +45,9 @@ int verifica_sotto_albero(BitMap* bitmap,int idx);
 //e inoltre se il buddy è occupato(1) setta a 1 anche il padre 
 void BitMap_setBit_a_1(BitMap* bitmap,int idx);
 
+//setta il bit corrispondente all'indice idx a 0
+//setto tutti i padri di idx a 0 fino a che non trovo padre con 0
+void BitMap_setBit_a_0(BitMap* bitmap, int idx);
 //setta a zero tutti i bit della bitmap
 void Bitmap_clear(BitMap* bitmap);
 
