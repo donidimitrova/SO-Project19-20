@@ -3,23 +3,9 @@
 #include "bit_map.h"
 #define MAX_LEVELS 16
 
-/*
-// one entry of the buddy list
-typedef struct BuddyListItem {
-  ListItem list;
-  int idx;   // tree index
-  int level; // level for the buddy
-  char* start; // start of memory
-  int size;
-  struct BuddyListItem* buddy_ptr;
-  struct BuddyListItem* parent_ptr;
-} BuddyListItem;
-*/
-
 typedef struct  {
-  //ListHead free[MAX_LEVELS];
+
   int num_levels;
-  //PoolAllocator list_allocator;
   BitMap bitmap;
   char* memory; // the memory area to be managed
   int min_bucket_size; // the minimum page of RAM that can be returned

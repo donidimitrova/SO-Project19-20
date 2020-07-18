@@ -11,7 +11,7 @@
 */
 
 
-
+//setta a zero tutti i bit della bitmap
 void BitMap_clear(BitMap* bitmap){
   for(int i=1;i<bitmap->num_bits;i++){
     //printf("setto il bit %d a 0\n",i);
@@ -24,6 +24,7 @@ void BitMap_clear(BitMap* bitmap){
   }
 }
 
+//restituisce 1 se tutti i bit della bitmap sono zero, 0 altrimenti
 int BitMap_is_empty(BitMap* bitmap){
   for(int i=1;i<bitmap->num_bits;i++){
     if(BitMap_bit(bitmap,i)){
@@ -35,7 +36,7 @@ int BitMap_is_empty(BitMap* bitmap){
 
 }
 
-
+//stampa tutti gli indici dove bitmap[index]=1
 void BitMap_idx_occupati(BitMap* bitmap){
   printf("Indici occupati:\n");
   for(int i=1;i<bitmap->num_bits;i++){
@@ -102,25 +103,27 @@ int parentIdx(int idx){
   return idx/2;
 }
 
-int startIdx(int idx){
-  return (idx-(1<<levelIdx(idx)));
-}
-
-
+// restituisce 0 se tutti i padri dell'indice idx sono liberi
+//altrimenti ritorna il livello relativo alla posizione dell'1 più alto trovato
 int verifica_padri(BitMap* bitmap,int idx){
   int padre=idx/2;
+  int max_level=0;
+  int level_corrente=1;
   while(padre!=0){
     if(BitMap_bit(bitmap,padre)){
       //printf("IDX: %d occupato\n",padre);
-      return 0;
+      max_level=level_corrente;
     }
     padre=padre/2;
+    level_corrente++;
   }
   //printf("IDX: %d libero\n",idx);
-  return 1;
+  return max_level;
 
 }
 
+//ritorna 1 se tutti gli elementi del sottoalbero dell'indice idx
+//sono liberi (settati a zero), ritorna 1 altrimenti
 int verifica_sotto_albero(BitMap* bitmap,int idx){
   int cont=idx*2;
   int level=1;
@@ -144,7 +147,8 @@ int verifica_sotto_albero(BitMap* bitmap,int idx){
 
 
 
-
+//setta il bit corrispondente all'indice idx a 1
+//se il buddy è occupato (ovvero 1) setta a 1 anche il padre
 void BitMap_setBit_a_1(BitMap* bitmap,int idx){
   BitMap_setBit(bitmap,idx,1);
   int padre=idx;

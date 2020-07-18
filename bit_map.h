@@ -33,8 +33,8 @@ int parentIdx(int idx);
 
 
 
-//ritorna 1 se tutti i padri dell'indice idx sono liberi
-//(settati a zero) ritorna 0 altrimenti
+//ritorna 0 se tutti i padri dell'indice idx sono liberi
+//altrimenti ritorna il livello relativo alla posizione dell'1 più alto trovato
 int verifica_padri(BitMap* bitmap,int idx);
 
 //ritorna 1 se tutti gli elementi del sottoalbero dell'indice idx
@@ -45,11 +45,11 @@ int verifica_sotto_albero(BitMap* bitmap,int idx);
 //e inoltre se il buddy è occupato(1) setta a 1 anche il padre 
 void BitMap_setBit_a_1(BitMap* bitmap,int idx);
 
-int startIdx(int idx);
-
-
+//setta a zero tutti i bit della bitmap
 void Bitmap_clear(BitMap* bitmap);
 
+//ritorna 1 se tutti i bit della bitmap sono zero, altrimenti 0
 int BitMap_is_empty(BitMap* bitmap);
 
+//stampa tutti gli indici dove bitmap[index]=1
 void BitMap_idx_occupati(BitMap* bitmap);
