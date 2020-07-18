@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
   //1 we see if we have enough memory for the buffers
   int req_size=BuddyAllocator_calcSize(BUDDY_LEVELS);
-  printf("size requested for initialization: %d/BUFFER_SIZE\n", req_size);
+  printf("Dimensione richiesta per l'inizializzazione: %d/BUFFER_SIZE\n", req_size);
 
   //2 we initialize the allocator
   printf("init... ");
@@ -40,11 +40,11 @@ int main(int argc, char** argv) {
   printf("%p\n",p1p);
   char** buddy_ptr=(char**)p1p;
   char* buddy=*buddy_ptr;
-  //char** buddy_p1=(char**) ((char*) p1-8);
   printf("buddy di p1: %p\n",buddy);
   printf("p2: %p\n",p2);
   printf("p3: %p\n",p3);
-  //assert(BitMap_is_empty(&alloc.bitmap));
+
+
   BuddyAllocator_free(&alloc, p1);
   BitMap_idx_occupati(&alloc.bitmap);
   BuddyAllocator_free(&alloc, p2);

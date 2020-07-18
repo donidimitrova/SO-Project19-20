@@ -85,12 +85,12 @@ void BuddyAllocator_init(BuddyAllocator* alloc,
   // we need enough memory to handle internal structures
   assert (buffer_size>=BuddyAllocator_calcSize(num_levels));
 
-  int num_bits=1<<(num_levels+1); // maximum number of allocations, used to size the list
+  int num_bits=1<<(num_levels+1); // maximum number of allocations
   int num_bytes=num_bits/8 + ((num_bits%8)!=0);
 
   printf("BUDDY INITIALIZING\n");
   printf("\tLivelli: %d", num_levels);
-  printf("\tMax list entries: %d bytes\n", num_bytes);
+  printf("\tSize Bitmap: %d bytes\n", num_bytes);
   printf("\tBucket size:%d\n", min_bucket_size);
   printf("\tManaged memory %d bytes\n", (1<<num_levels)*min_bucket_size);
   
