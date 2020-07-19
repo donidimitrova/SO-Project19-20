@@ -40,7 +40,7 @@ char* from_idx_to_memory_address(BuddyAllocator* alloc,int idx){
   //printf("IDX: %d\tIDX_BUDDY: %d\n",idx,buddyIdx);
   char* address=alloc->memory+(idx-(1<<levelIdx(idx)))*dimensione_level;
   char* address_buddy=alloc->memory+(indice_buddy-(1<<levelIdx(indice_buddy)))*dimensione_level;
-  printf("Indirizzo Buddy: %p\t Indirizzo BUDDY: %p\n",address,address_buddy);
+  printf("Indirizzo: %p\t Indirizzo BUDDY: %p\n",address,address_buddy);
   int differenza=address-address_buddy;
   if(differenza<0)
     differenza*=-1;
@@ -48,10 +48,10 @@ char* from_idx_to_memory_address(BuddyAllocator* alloc,int idx){
 
   void** start= (void**) address;
   *start=address_buddy;
-  printf("Indirizzo: %p\n",start);
+  //printf("Indirizzo: %p\n",start);
   //printf("address: %p\n",address);
   //*address=address_buddy;
-  printf("Indirizzo BUDDY: %p\n",*start);
+  //printf("Indirizzo BUDDY: %p\n",*start);
   //printf("address_BUDDY: %p\n",*address);
   return (char*) (address);
 }
@@ -110,7 +110,7 @@ int BuddyAllocator_getBuddy(BuddyAllocator* alloc, int level){
   
   int start_idx=1<<level;
   int end_idx=(1<<(level+1))-1;
-  //printf("StartIdx: %d\tEndIdx: %d\n",start_idx,end_idx);
+  printf("StartIdx: %d\tEndIdx: %d\n",start_idx,end_idx);
   int cont=start_idx;
   while(cont<=end_idx){
     int ultimo_livello_occupato=0;

@@ -30,12 +30,14 @@ int BitMap_is_empty(BitMap* bitmap){
 
 //stampa tutti gli indici dove bitmap[index]=1
 void BitMap_idx_occupati(BitMap* bitmap){
+  int conta=0;
   for(int i=0;i<bitmap->num_bits;i++){
     if(BitMap_bit(bitmap,i)){
       printf("Indice occupato: %d \n",i);
-      
+      conta++;
     }   
   }
+  if(conta==0) printf("Bitmap pulito!\n");
   printf("\n");
 
 }

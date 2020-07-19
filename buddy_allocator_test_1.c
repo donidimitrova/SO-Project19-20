@@ -43,8 +43,6 @@ int main(int argc, char** argv) {
     BitMap_idx_occupati(&alloc.bitmap);
   }
 
-  BitMap_idx_occupati(&alloc.bitmap);
-
   printf("\n\n\n LIBERO MEMORIA ALLOCATA \n\n");
   
   for(int i=0;i<NUM_TEST;i++){
@@ -58,5 +56,6 @@ int main(int argc, char** argv) {
     }
   }
 
+ 
   assert(BitMap_is_empty(&alloc.bitmap));
 }

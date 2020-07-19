@@ -55,8 +55,7 @@ int main(int argc, char** argv) {
 
   BuddyAllocator_free(&alloc,p5);
   BitMap_idx_occupati(&alloc.bitmap);
-
-  
+ 
 
   
   assert(BitMap_is_empty(&alloc.bitmap));

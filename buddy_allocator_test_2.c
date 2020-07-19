@@ -43,7 +43,6 @@ int main(int argc, char** argv) {
     BitMap_idx_occupati(&alloc.bitmap);
   }
 
-  BitMap_idx_occupati(&alloc.bitmap);
 
   printf("\n\n\n LIBERO MEMORIA ALLOCATA \n\n");
   for(int i=0;i<NUM_TEST;i++){
@@ -55,6 +54,7 @@ int main(int argc, char** argv) {
         printf("Risultato della malloc era NULL,quindi non posso fare free\n");
         //BuddyAllocator_free(&alloc,test_indirizzi[NUM_TEST-1-i]);
     }
+    
     
   }
 
